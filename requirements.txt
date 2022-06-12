@@ -1,0 +1,8 @@
+asgiref==3.5.2
+Django==4.0.5
+gunicorn==20.1.0
+python-http-client==3.3.7
+sendgrid==6.9.7
+sqlparse==0.4.2
+starkbank-ecdsa==2.0.3
+tzdata==2022.1

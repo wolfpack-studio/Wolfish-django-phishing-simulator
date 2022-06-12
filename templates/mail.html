@@ -1,0 +1,9 @@
+{% load static %}
+
+<h4>Phishing Simulator Prototype</h4>
+{% include 'nav.html' %}
+<form method="POST" action="">
+    {{ form }}
+    {% csrf_token %}
+    <input type="submit" name="submit" >
+</form>
