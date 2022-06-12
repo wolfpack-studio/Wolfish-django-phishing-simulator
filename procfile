@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn phishing.wsgi
+web: gunicorn --bind 0.0.0.0:$PORT phishing.wsgi
