@@ -5,6 +5,7 @@ import sendgrid
 from sendgrid.helpers.mail import Mail, Email, To, Content
 from phishing.settings import SENDGRID_API_KEY
 from sendgrid import SendGridAPIClient
+import json
 # Create your views here.
 
 def MailView(request):
@@ -97,3 +98,19 @@ def SenderAddView(request):
         form = AddSenderForm()
         return render(request, 'add-sender.html', {'form':form})
 
+
+
+
+
+def SenderListView(request):
+    sg = SendGridAPIClient(SENDGRID_API_KEY)
+
+    response = sg.client.verified_senders.get()
+
+    print(response.status_code)
+    print(response.body.decode("utf-8"))
+    print(response.headers)
+    data = json.loads(response.body.decode("utf-8"))["results"]
+
+
+    return render(request, 'list-senders.html', {"data":data})

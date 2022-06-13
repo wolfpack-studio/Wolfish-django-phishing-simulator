@@ -1,0 +1,18 @@
+{% load static %}
+
+        
+    
+<h4>Phishing Simulator Prototype</h4>
+{% include 'nav.html' %}
+<h5>Senders</h5>
+<div style="margin: 0 50px;">
+    {% for i in data %}
+        <div style="margin-bottom: 20px;">
+            <div>ID: {{ i.id }}</div>
+            <div>NICKNAME: {{ i.nickname }}</div>
+            <div>FROM EMAIL: {{ i.from_email }}</div>
+            <div>REPLY TO: {{ i.reply_to }}</div>
+            <div>VERIFIED: {{ i.verified }}</div> 
+        </div>
+    {% endfor %}
+</div>
