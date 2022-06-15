@@ -10,3 +10,4 @@ sqlparse==0.4.2
 starkbank-ecdsa==2.0.3
 tzdata==2022.1
 whitenoise==6.2.0
+django-widget-tweaks==1.4.12
