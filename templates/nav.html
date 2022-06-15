@@ -11,13 +11,13 @@
     <!-- Links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'mail-view' %}">Send mail</a>
+        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'mail-view' %}">Send mail</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'add-sender-view' %}">Add sender</a>
+        <a class="nav-link {% if request.path == '/add-sender/' %}active{% endif %}" href="{% url 'add-sender-view' %}">Add sender</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'list-sender-view' %}">Senders</a>
+        <a class="nav-link {% if request.path == '/list-sender/' %}active{% endif %}" href="{% url 'list-sender-view' %}">Senders</a>
       </li>
     </ul>
   
