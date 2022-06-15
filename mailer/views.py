@@ -24,7 +24,7 @@ def MailView(request):
 
                 sg = sendgrid.SendGridAPIClient(api_key=SENDGRID_API_KEY)
 
-                from_email = Email(sender_email.strip())
+                from_email = Email(sender_email.strip(), sender_name)
                 subject = subject
 
                 emails = email_list.split(",")
