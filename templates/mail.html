@@ -1,9 +1,37 @@
 {% load static %}
 
-<h4>Phishing Simulator Prototype</h4>
 {% include 'nav.html' %}
 <form method="POST" action="">
-    {{ form }}
+
+    <div class="row p-4">
+        <div class="col-md-4 ">
+                {{form.sender_email}}
+        </div>
+        <div class="col-md-4 ">
+            {{form.sender_name}}        
+        </div>
+    </div>
+    <div class="row p-4">
+        <div class="col-md-8 ">
+            {{form.subject}}
+        </div>
+    </div>
+    <div class="row p-4">
+        <div class="col-md-4">
+            {{form.message}}
+            
+            {{form.type_selector}}
+        </div>
+        <div class="col-md-4 ">
+            {{form.email_list}}
+        </div>
+    </div>
+
     {% csrf_token %}
-    <input type="submit" name="submit" >
+    <div class="row p-4">
+    <input class="btn btn-primary col-md-4" type="submit" name="submit" >
+    </div>
 </form>
+
+
+

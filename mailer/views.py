@@ -88,7 +88,7 @@ def SenderAddView(request):
                 print(response.body)
                 print(response.headers)
 
-                return render(request, 'response.html', {"response": "Verification email send successfull. Check Inbox"})
+                return render(request, 'response.html', {"response": "Verification email sent successfuly. Check Inbox"})
 
             except Exception as e:
                 return render(request, 'response.html', {"response": e})
@@ -103,14 +103,24 @@ def SenderAddView(request):
 
 
 def SenderListView(request):
-    sg = SendGridAPIClient(SENDGRID_API_KEY)
 
-    response = sg.client.verified_senders.get()
+    if request.method == "POST":
+        print(dict(request.POST))
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
 
-    print(response.status_code)
-    print(response.body.decode("utf-8"))
-    print(response.headers)
-    data = json.loads(response.body.decode("utf-8"))["results"]
+        for id in dict(request.POST)["ids"]:
+            response = sg.client.verified_senders._(id).delete()
+        return render(request, 'response.html', {"response": "Operation is performed."})
+    
+
+    else:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.client.verified_senders.get()
+
+        print(response.status_code)
+        print(response.body.decode("utf-8"))
+        print(response.headers)
+        data = json.loads(response.body.decode("utf-8"))["results"]
 
 
-    return render(request, 'list-senders.html', {"data":data})
+        return render(request, 'list-senders.html', {"data":data})

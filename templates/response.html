@@ -1,3 +1,13 @@
-<h6>{{response}}</h6>
+{% load static %}
 
-<a class="nav-link" href="{% url 'mail-view' %}">Back to home page</a>
+
+{% include 'nav.html' %}
+<div class="row p-4">
+<div class="d-flex justify-content-around">{{response}}</div>
+</div>
+<div class="row p-4">
+
+<div class="d-flex justify-content-around">
+<a class="btn btn-primary" href="{% url 'mail-view' %}">Back to home page</a>
+</div>
+</div>

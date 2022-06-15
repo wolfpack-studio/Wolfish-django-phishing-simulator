@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'mailer',
 ]
 
+
+
+
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -130,4 +135,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SENDGRID_API_KEY = "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"
 
 
+
+
 django_heroku.settings(locals())
+
+
