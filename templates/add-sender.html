@@ -1,9 +1,9 @@
 {% load static %}
 
 {% include 'nav.html' %}
-<div class="container">
+<div class="container p-4">
 <form method="POST" action="">
-    <div class="row p-4">
+    <div class="row mb-2">
         <div class="col-md-6 ">
                 {{form.from_email}}
         </div>
@@ -11,7 +11,7 @@
             {{form.from_name}}        
         </div>
     </div>
-    <div class="row p-4">
+    <div class="row mb-2">
         <div class="col-md-6 ">
                 {{form.reply_to_email}}
         </div>
@@ -19,13 +19,13 @@
             {{form.reply_to_name}}        
         </div>
     </div>
-    <div class="row p-4">
+    <div class="row mb-2">
         <div class="col-md-4 ">
                 {{form.nickname}}
         </div>
     </div>
     {% csrf_token %}
-    <div class="row p-4">
+    <div class="row mb-2">
     <input class="btn btn-primary col-md-4" type="submit" name="submit" >
     </div>
 </form>
