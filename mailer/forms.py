@@ -11,7 +11,7 @@ class MailForm(forms.Form):
     subject         = forms.CharField(required=True, widget=forms.TextInput(attrs={"placeholder":"Subject","class":"form-control",'style':'display:block; margin-bottom:4px'}))
     message         = forms.CharField(required=True, widget=forms.Textarea(attrs={"id":"editor", "name":"ck", "placeholder":"Message","class":"form-control",'style':'display:block; margin-bottom:4px'}))
     email_list      = forms.CharField(required=True, widget=forms.Textarea(attrs={"placeholder":"Email List","class":"form-control",'style':'display:block; margin-bottom:15px'}))
-    type_selector   = forms.ChoiceField(required=True, choices=CHOICES,  widget=forms.RadioSelect(attrs={ 'style':'display:inline-block; margin-bottom:2px'}))
+    #type_selector   = forms.ChoiceField(required=True, choices=CHOICES,  widget=forms.RadioSelect(attrs={ 'style':'display:inline-block; margin-bottom:2px'}))
 
 
 class AddSenderForm(forms.Form):

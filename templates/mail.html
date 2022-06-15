@@ -30,13 +30,13 @@
             {{form.message|add_class:"ckeditor"}}
             {{ form.media }}
             
-            {{form.type_selector}}
+            
         </div>
         
     </div>
 
     {% csrf_token %}
-    <div class="row mb-2">
+    <div class="row mb-2 p-4">
     <input class="btn btn-primary col-md-4" type="submit" name="submit" >
     </div>
 </form>

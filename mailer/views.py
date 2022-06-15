@@ -18,7 +18,7 @@ def MailView(request):
                 subject         = form.cleaned_data['subject']
                 message         = form.cleaned_data['message']
                 email_list      = form.cleaned_data['email_list']
-                type_selector   = form.cleaned_data['type_selector']
+                #type_selector   = form.cleaned_data['type_selector']
                 
 
 
@@ -31,7 +31,7 @@ def MailView(request):
                 emails = [(a.strip(), "") for a in emails]
                 
                 to_email = emails
-                content = Content(type_selector, message)
+                content = Content("text/html", message)
                 
                 mail = Mail(from_email, to_email, subject, content, is_multiple=True)
 
