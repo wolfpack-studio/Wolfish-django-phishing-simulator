@@ -1,7 +1,7 @@
 {% load static %}
 
-
 {% include 'nav.html' %}
+<div class="container">
 <div class="row p-4">
 <div class="d-flex justify-content-around">{{response}}</div>
 </div>
@@ -9,5 +9,6 @@
 
 <div class="d-flex justify-content-around">
 <a class="btn btn-primary" href="{% url 'mail-view' %}">Back to home page</a>
+</div>
 </div>
 </div>
