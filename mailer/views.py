@@ -6,7 +6,7 @@ from sendgrid.helpers.mail import Mail, Email, To, Content
 from phishing.settings import SENDGRID_API_KEY
 from sendgrid import SendGridAPIClient
 import json
-# Create your views here.
+
 
 def MailView(request):
     if request.method == "POST":
