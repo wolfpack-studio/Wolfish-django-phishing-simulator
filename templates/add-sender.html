@@ -5,25 +5,13 @@
 <form method="POST" action="">
     <div class="row mb-2">
         <div class="col-md-6 ">
-                {{form.from_email}}
+                {{form.sender_email}}
         </div>
         <div class="col-md-4 ">
-            {{form.from_name}}        
+            {{form.sender_name}}        
         </div>
     </div>
-    <div class="row mb-2">
-        <div class="col-md-6 ">
-                {{form.reply_to_email}}
-        </div>
-        <div class="col-md-4 ">
-            {{form.reply_to_name}}        
-        </div>
-    </div>
-    <div class="row mb-2">
-        <div class="col-md-4 ">
-                {{form.nickname}}
-        </div>
-    </div>
+
     {% csrf_token %}
     <div class="row mb-2 p-4">
     <input class="btn btn-primary col-md-4" type="submit" name="submit" >

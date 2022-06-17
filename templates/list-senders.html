@@ -8,10 +8,10 @@
     <thead>
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">NickName</th>
-        <th scope="col">From Email</th>
-        <th scope="col">Reply To</th>
-        <th scope="col">Verified</th>
+        <th scope="col">Sender Name</th>
+        <th scope="col">Sender Email</th>
+        <th scope="col">IPs</th>
+        <th scope="col">Active</th>
         <th scope="col">Delete</th>
       </tr>
     </thead>
@@ -20,10 +20,10 @@
      
       <tr>
         <th scope="row">{{ i.id }}</th>
-        <td>{{ i.nickname }}</td>
-        <td>{{ i.from_email }}</td>
-        <td>{{ i.reply_to }}</td>
-        <td>{{ i.verified }}</td>
+        <td>{{ i.name }}</td>
+        <td>{{ i.email }}</td>
+        <td>{{ i.ips }}</td>
+        <td>{{ i.active }}</td>
         <td ><input type="checkbox" name="ids" value="{{i.id}}"></td>
         
       </tr>

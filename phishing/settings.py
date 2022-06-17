@@ -132,20 +132,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# SMTP API
+SENDINBLUE_API_KEY = "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"
 
-SENDGRID_API_KEY = "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"
-
-EMAIL_BACKEND = 'smtp.sendgrid.com'
-
-# Host for sending e-mail.
-SMTP_HOST_USER = 'shivam.wolfpack@gmail.com'
-
-# Port for sending e-mail.
-EMAIL_PORT = 587
-
-
-
-
-django_heroku.settings(locals())
 
 
