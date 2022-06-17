@@ -45,7 +45,10 @@ def MailView(request):
                 to = emails
                 headers = {"Some-Custom-Name":"unique-id-1234"}
 
-                send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, reply_to=reply_to, headers=headers, html_content=html_content, sender=sender, subject=subject)
+                if reply_to_email == "":
+                    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, headers=headers, html_content=html_content, sender=sender, subject=subject)
+                else:
+                    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, reply_to=reply_to, headers=headers, html_content=html_content, sender=sender, subject=subject)
 
                 
                 api_response = api_instance.send_transac_email(send_smtp_email)
@@ -55,6 +58,10 @@ def MailView(request):
             
             except Exception as e:
                 return render(request, 'response.html', {"response": e})
+
+        else:
+            return render(request, 'response.html', {"response": "Incorrect input format"})
+        
     else:
         form = MailForm()
         return render(request, 'mail.html', {'form':form})
