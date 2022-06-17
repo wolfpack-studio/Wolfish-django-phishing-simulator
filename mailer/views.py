@@ -1,3 +1,4 @@
+from re import I
 from django.shortcuts import render
 from .forms import MailForm, AddSenderForm
 from django.http import HttpResponse
@@ -68,6 +69,21 @@ def MailView(request):
 
 
 
+def get_sender_info(email):
+    api_instance = sib_api_v3_sdk.SendersApi(sib_api_v3_sdk.ApiClient(configuration))
+    api_response = api_instance.get_senders()
+    data = api_response.to_dict()["senders"]
+
+    sender = None
+
+    for i in data:
+        if i["email"] == email:
+            sender = {"id":i["id"], "active":i["active"]}
+    
+    return sender
+
+
+
 def SenderAddView(request):
     
     if request.method == "POST":
@@ -80,16 +96,32 @@ def SenderAddView(request):
                 sender_email       = form.cleaned_data['sender_email']
 
                 api_instance = sib_api_v3_sdk.SendersApi(sib_api_v3_sdk.ApiClient(configuration))
-                sender = sib_api_v3_sdk.CreateSender(name = sender_name, email=sender_email)
+                
+                sender = get_sender_info(sender_email)
 
-                api_response = api_instance.create_sender(sender=sender)
-                print(api_response)
+                if sender == None:
 
-                return render(request, 'response.html', {"response": "Verification email sent successfuly. Check Inbox"})
+                    sender = sib_api_v3_sdk.CreateSender(name = sender_name, email=sender_email)
+                    api_response = api_instance.create_sender(sender=sender)
+                    print(api_response)
+
+                    return render(request, 'response.html', {"response": "Verification email sent successfuly. Check Inbox"})
+
+                else:
+                    
+                    if sender["active"] == True:
+                        return render(request, 'response.html', {"response": "Sender is already active"})
+                    else:
+                        api_response = api_instance.delete_sender(sender["id"])
+                        sender = sib_api_v3_sdk.CreateSender(name = sender_name, email=sender_email)
+                        api_response = api_instance.create_sender(sender=sender)
+                        return render(request, 'response.html', {"response": "Verification email sent again. Check Inbox"})
 
             except Exception as e:
                 return render(request, 'response.html', {"response": e})
 
+        else:
+            return render(request, 'response.html', {"response": "Incorrect input format"})
 
     else:
         form = AddSenderForm()
