@@ -135,6 +135,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SENDGRID_API_KEY = "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"
 
+EMAIL_BACKEND = 'smtp.sendgrid.com'
+
+# Host for sending e-mail.
+SMTP_HOST_USER = 'shivam.wolfpack@gmail.com'
+
+# Port for sending e-mail.
+EMAIL_PORT = 587
+
 
 
 

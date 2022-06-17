@@ -8,8 +8,12 @@ from sendgrid import SendGridAPIClient
 import json
 
 
+
+# View to send emails
 def MailView(request):
     if request.method == "POST":
+
+        # Fetching data from form
         form = MailForm(request.POST)
         if form.is_valid():
             try:
@@ -21,7 +25,7 @@ def MailView(request):
                 #type_selector   = form.cleaned_data['type_selector']
                 
 
-
+                # Create sendgrid mail client with auth api key
                 sg = sendgrid.SendGridAPIClient(api_key=SENDGRID_API_KEY)
 
                 from_email = Email(sender_email.strip(), sender_name)
@@ -56,6 +60,8 @@ def MailView(request):
 def SenderAddView(request):
     
     if request.method == "POST":
+
+        # Fetching data from form
         form = AddSenderForm(request.POST)
         if form.is_valid():
             try:
@@ -65,6 +71,7 @@ def SenderAddView(request):
                 reply_to_email  = form.cleaned_data['reply_to_email']
                 reply_to_name   = form.cleaned_data['reply_to_name']
         
+                # Create sendgrid mail client with auth api key
                 sg = SendGridAPIClient(SENDGRID_API_KEY)
 
                 data = {
