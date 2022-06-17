@@ -1,11 +1,9 @@
 from django.shortcuts import render
 from .forms import MailForm, AddSenderForm
 from django.http import HttpResponse
-import sendgrid
-from sendgrid.helpers.mail import Mail, Email, To, Content
 from phishing.settings import SENDINBLUE_API_KEY
-from sendgrid import SendGridAPIClient
-import json
+
+
 
 
 import sib_api_v3_sdk
