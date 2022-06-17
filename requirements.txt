@@ -5,9 +5,9 @@ django-heroku==0.3.1
 gunicorn==20.1.0
 psycopg2==2.9.3
 python-http-client==3.3.7
-sendgrid==6.9.7
 sqlparse==0.4.2
 starkbank-ecdsa==2.0.3
 tzdata==2022.1
 whitenoise==6.2.0
 django-widget-tweaks==1.4.12
+sib-api-v3-sdk==7.5.0
