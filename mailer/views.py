@@ -46,6 +46,11 @@ def MailView(request):
                 to = emails
                 headers = {"Some-Custom-Name":"unique-id-1234"}
 
+                sender_info = get_sender_info(sender_email)
+                
+                if (sender_info == None) or sender_info["active"] == False:
+                     return render(request, 'response.html', {"response": "Sender is not active"})
+
                 if reply_to_email == "":
                     send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, headers=headers, html_content=html_content, sender=sender, subject=subject)
                 else:
