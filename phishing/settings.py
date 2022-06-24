@@ -144,3 +144,9 @@ EMAIL_HOST_USER = 'shivam.wolfpack@gmail.com'
 EMAIL_HOST_PASSWORD = "w2VOzHGMrpT5mXNa"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+
+
+
+
+TIME_ZONE= "Asia/Kolkata"
