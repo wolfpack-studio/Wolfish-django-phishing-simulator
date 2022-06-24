@@ -1,0 +1,3 @@
+creds = {
+    'DEBUG': True
+}

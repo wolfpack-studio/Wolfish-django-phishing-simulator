@@ -1,0 +1,72 @@
+{% load static %}
+
+{% include 'nav.html' %}
+<div class="container p-4">       
+
+<div class="row mb-2">
+    <div class="col-md-4 mb-4">
+        <h6>
+            Subject
+        </h6>
+        {{data.subject}}
+    </div>
+    <div class="col-md-4 mb-4">
+        <h6>
+            Message
+        </h6>
+        {{data.message}}
+    </div>
+    <div class="col-md-4 mb-4">
+        <h6>
+            Sender
+        </h6>
+        {{data.sender_name}} : {{data.sender_email}}
+    </div>
+
+    <div class="col-md-4 mb-4 ">
+        <h6>
+            Reply-To
+        </h6>
+        {{data.reply_to_name}} : {{data.reply_to_email}}
+    </div>
+
+    <div class="col-md-4 mb-4 ">
+        <h6>
+            Datetime
+        </h6>
+        {{data.dt_stamp}}
+    </div>
+ 
+
+</div>
+
+
+<section>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Sent</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for i in res %} 
+         
+          <tr>
+            <th scope="row">{{ i }}</th>
+            {% if "@" and "." in i %}
+                <td>true</td>
+            {% else %}
+                <td>false</td>
+            {% endif %}
+            
+          </tr>
+          
+          {% endfor %}
+          
+        </tbody>
+    </table>
+</section>
+
+
+</div>

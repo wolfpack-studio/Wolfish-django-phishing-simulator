@@ -137,3 +137,10 @@ SENDINBLUE_API_KEY = "xkeysib-3d73cf2247b085af4c0c28c894e130fa591d9400f4e7d9452a
 
 
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_HOST_USER = 'shivam.wolfpack@gmail.com'
+EMAIL_HOST_PASSWORD = "w2VOzHGMrpT5mXNa"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

@@ -8,11 +8,8 @@
     <thead>
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">Sender Name</th>
-        <th scope="col">Sender Email</th>
-        <th scope="col">IPs</th>
-        <th scope="col">Active</th>
-        <th scope="col">Delete</th>
+        <th scope="col">SUBJECT</th>
+        <th scope="col">DateTime</th>
       </tr>
     </thead>
     <tbody>
@@ -20,11 +17,8 @@
      
       <tr>
         <th scope="row">{{ i.id }}</th>
-        <td>{{ i.name }}</td>
-        <td>{{ i.email }}</td>
-        <td>{{ i.ips }}</td>
-        <td>{{ i.active }}</td>
-        <td ><input type="checkbox" name="ids" value="{{i.id}}"></td>
+        <td><a href="{% url 'detail-sender' id=i.id %}" class="link-info">{{ i.subject }}</a></td>
+        <td>{{ i.dt_stamp }}</td>
         
       </tr>
       
@@ -33,6 +27,5 @@
     </tbody>
 </table>
 {% csrf_token %}
-<input class="btn btn-primary" type="submit" name="Delete" value="Delete">
 </form>
 </div>

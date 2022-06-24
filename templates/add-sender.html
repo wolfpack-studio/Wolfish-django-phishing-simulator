@@ -2,19 +2,75 @@
 
 {% include 'nav.html' %}
 <div class="container p-4">
+
+    <h6 class="mb-4">Active SMTP</h6>
+    <section>  
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">EMAIL_HOST</th>
+                <th scope="col">EMAIL_HOST_USER</th>
+                <th scope="col">EMAIL_HOST_PASSWORD</th>
+                <th scope="col">EMAIL_PORT</th>
+                <th scope="col">EMAIL_USE_TLS</th>
+              </tr>
+            </thead>
+            <tbody>
+             
+              <tr>
+                <th scope="row">{{ data.EMAIL_HOST }}</th>
+                <td>{{ data.EMAIL_HOST_USER }}</td>
+                <td>{{ data.EMAIL_HOST_PASSWORD }}</td>
+                <td>{{ data.EMAIL_PORT }}</td>
+                <td>{{ data.EMAIL_USE_TLS }}</td>
+                
+              </tr>
+              
+              
+            </tbody>
+        </table>
+
+    </div>
+
+<div class="container p-4">
+<section>
 <form method="POST" action="">
-    <div class="row mb-2">
-        <div class="col-md-6 ">
-                {{form.sender_email}}
+    <div class="row mb-3 mt-5">
+        <div class="col-md-4 ">
+            {{form.email_host}}
         </div>
         <div class="col-md-4 ">
-            {{form.sender_name}}        
+                {{form.email_host_user}} 
         </div>
+        <div class="col-md-4 ">        
+                {{form.email_host_password}}
+        </div>
+        <div class="col-md-4 ">
+            {{form.email_port}} 
+        </div>
+    </div>
+    
+        
+    <div class="row mb-2">
+
+        <div class="col-md-4 ">
+            <h6>
+
+                {{form.email_use_tls.label}}:
+            </h6>
+            {{form.email_use_tls}}
+    </div>
+        
     </div>
 
     {% csrf_token %}
-    <div class="row mb-2 p-4">
-    <input class="btn btn-primary col-md-4" type="submit" name="submit" >
+    <div class="row  mt-4">
+        <div class="col-md-4">
+            <input class="btn btn-primary col-md-4" type="submit" name="submit" value="Update SMTP" >
+
+        </div>
     </div>
 </form>
+</section>
 </div>
+
