@@ -3,7 +3,6 @@ from .forms import MailForm, AddSMTP
 # sendinblue imports
 from django.core.mail import send_mail, EmailMultiAlternatives
 from .models import Mails
-import pytz
 
 import django.conf as conf
 
