@@ -39,20 +39,20 @@ def MailView(request):
                 if reply_to_email == "":
                     
                     for i in emails:
-                        msg = EmailMultiAlternatives(
+                        msg = EmailMessage(
                                     subject,
                                     message,
                                     from_email=sender_name+ '<'+sender_email+'>',
                                     to=[i],
                                     connection=backend,
                                     )
-                        msg.attach_alternative(message, "text/html")
+                        msg.content_subtype = "html"
                         msg.send()
                     Mails.objects.create(sender_email=sender_email,sender_name=sender_name,
                                                 subject=subject, message=message, email_list=email_list)
                 else:
                     for i in emails:
-                        msg = EmailMultiAlternatives(
+                        msg = EmailMessage(
                                     subject,
                                     message,
                                     from_email=sender_name+ '<'+sender_email+'>',
@@ -60,7 +60,7 @@ def MailView(request):
                                     reply_to=[reply_to_name+ '<'+reply_to_email+'>'],
                                     connection=backend,
                                     )
-                        msg.attach_alternative(message, "text/html")
+                        msg.content_subtype = "html"
                         msg.send()
                     Mails.objects.create(sender_email=sender_email,sender_name=sender_name, 
                                                 reply_to_email=reply_to_email, reply_to_name=reply_to_name,
