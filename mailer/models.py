@@ -14,7 +14,7 @@ class Mails(models.Model):
     dt_stamp        = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 
@@ -26,4 +26,4 @@ class Backend(models.Model):
     email_use_tls           = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
