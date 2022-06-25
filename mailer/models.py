@@ -15,3 +15,15 @@ class Mails(models.Model):
 
     def __str__(self):
         return self.id
+
+
+
+class Backend(models.Model):
+    email_host              = models.CharField(max_length=255, blank=True, null=True)
+    email_host_user         = models.CharField(max_length=255, blank=True, null=True)
+    email_host_password     = models.CharField(max_length=255, blank=True, null=True)
+    email_port              = models.CharField(max_length=255, blank=True, null=True)
+    email_use_tls           = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.id
