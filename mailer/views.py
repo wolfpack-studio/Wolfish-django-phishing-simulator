@@ -28,13 +28,15 @@ def MailView(request):
 
 
                 b = Backend.objects.all()[0]
-                print("backend instance ", b)
+
                 backend = EmailBackend(host=b.email_host, port=b.email_port, username=b.email_host_user, 
                                     password=b.email_host_password, use_tls=b.email_use_tls, fail_silently=True)
-                print("email backend ", backend)
+
+                # backend = EmailBackend(host="smtpout.secureserver.net" , port="465", username="Syed@quadrimetanoia.com", 
+                #                     password="2Xgh2%/BJ8?EUQ8", use_tls=True, fail_silently=True)
+                
                 emails = email_list.splitlines()
                 emails = [i.strip() for i in emails]
-                print(emails)
 
                 # Reply-to validation
                 if reply_to_email == "":
