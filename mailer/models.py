@@ -16,6 +16,9 @@ class Mails(models.Model):
     def __str__(self):
         return str(self.id)
 
+    class Meta:
+        verbose_name_plural = "Mail"
+
 
 
 class Backend(models.Model):
