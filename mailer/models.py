@@ -27,3 +27,13 @@ class Backend(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class MailTemplate(models.Model):
+    template_name               = models.CharField(max_length=255, blank=True, null=True)
+    url_slug                    = models.CharField(max_length=255, blank=True, null=True)
+    template_code               = models.TextField(blank=True, null=True)
+
+
+    def __str__(self):
+        return str(self.id)

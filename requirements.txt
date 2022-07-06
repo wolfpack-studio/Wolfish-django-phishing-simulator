@@ -11,3 +11,4 @@ tzdata==2022.1
 whitenoise==6.2.0
 django-widget-tweaks==1.4.12
 sib-api-v3-sdk==7.5.0
+whitenoise==6.2.0
