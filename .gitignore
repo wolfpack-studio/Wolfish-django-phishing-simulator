@@ -1,0 +1,11 @@
+db.sqlite3
+db.sqlite3-journal
+
+.env
+.venv
+env/
+venv/
+ENV/
+
+
+*.sqlite3
