@@ -1,0 +1,35 @@
+{% load static %}
+
+{% include 'nav.html' %}
+<div class="container p-4">       
+
+{% for i in data %}
+<div class="row mb-2">
+    <div class="col-md-4 mb-4">
+        <h6>
+            link
+        </h6>
+        {{i.link}}
+    </div>
+    <div class="col-md-2 mb-4">
+        <h6>
+            click_count
+        </h6>
+        {{i.click_count}}
+        
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <h6>
+            data
+        </h6>
+        {% for j in i.pdata %}
+        <p>{{j}}</p>
+        {% endfor %}
+    </div>
+
+</div>
+{% endfor %}
+
+
+</div>

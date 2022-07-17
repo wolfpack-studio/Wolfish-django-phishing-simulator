@@ -50,11 +50,15 @@
           </tr>
         </thead>
         <tbody>
-        {% for i in res %} 
+        {% for i in act_res %} 
          
           <tr>
-            <th scope="row">{{ i }}</th>
-            {% if "@" and "." in i %}
+            {% if i.valid == True %}
+                    <th scope="row"><a href="{% url 'user-detail' mail_unq_id=data.unq_id user_unq_id=i.unq_id %}" class="link-info">{{ i.email }}</a></th>
+            {% else %}
+                <th scope="row">{{ i.email }}</th>
+            {% endif %}
+            {% if i.valid == True %}
                 <td>true</td>
             {% else %}
                 <td>false</td>

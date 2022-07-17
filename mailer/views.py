@@ -2,10 +2,24 @@ from django.shortcuts import render
 from .forms import MailForm, AddSMTP
 # sendinblue imports
 from django.core.mail import send_mail, EmailMultiAlternatives, EmailMessage, send_mass_mail
-from .models import Mails, Backend
+from .models import MailTemplate, Mails, Backend, PhishingData, PhishingDataDict, PhishingLink, Recipient
 from django.core.mail.backends.smtp import EmailBackend
 import django.conf as conf
 from django.template import Template
+from django.http import HttpResponse
+
+
+def get_links(s, first, last):
+    start_sep=first
+    end_sep=last
+    result=[]
+    tmp=s.split(start_sep)
+    for par in tmp:
+        if end_sep in par:
+            result.append(par.split(end_sep)[0])
+    return result
+
+
 
 
 # View to send emails
@@ -25,7 +39,8 @@ def MailView(request):
                 email_list      = form.cleaned_data['email_list']
                 #type_selector   = form.cleaned_data['type_selector']
 
-
+                valid_message = message.replace("&lt;phish&gt;","")
+                valid_message = valid_message.replace("&lt;/phish&gt;","")
 
                 b = Backend.objects.all()[0]
 
@@ -35,29 +50,51 @@ def MailView(request):
                 # backend = EmailBackend(host="smtpout.secureserver.net" , port="465", username="Syed@quadrimetanoia.com", 
                 #                     password="2Xgh2%/BJ8?EUQ8", use_tls=True, fail_silently=True)
                 
+
                 emails = email_list.splitlines()
                 emails = [i.strip() for i in emails]
+
+                m = Mails.objects.create(sender_email=sender_email,sender_name=sender_name,
+                                                subject=subject, message=valid_message, email_list=email_list)
+
+                # Enter data in links
+                links = get_links(message, "&lt;phish&gt;", "&lt;/phish&gt;")
+                for i in links:
+                    PhishingLink.objects.create(link = i, mail=m)
 
                 # Reply-to validation
                 if reply_to_email == "":
                     
                     for i in emails:
+
+                        if "@" and "." in i:
+                            r = Recipient.objects.create(email=i, mail=m)
+                        else:
+                            r = Recipient.objects.create(email=i, mail=m, valid=False)
+                        for j in links:
+                            valid_message = valid_message.replace(j, j+"/"+m.unq_id+"-"+r.unq_id)
+                        
                         msg = EmailMessage(
                                     subject,
-                                    message,
+                                    valid_message,
                                     from_email=sender_name+ '<'+sender_email+'>',
                                     to=[i],
                                     connection=backend,
                                     )
                         msg.content_subtype = "html"
                         msg.send()
-                    Mails.objects.create(sender_email=sender_email,sender_name=sender_name,
-                                                subject=subject, message=message, email_list=email_list)
+                        
+                    
+                                                
                 else:
                     for i in emails:
+                        if "@" and "." in i:
+                            r = Recipient.objects.create(email=i, mail=m)
+                        for j in links:
+                            valid_message = valid_message.replace(j, j+"/"+m.unq_id+"-"+r.unq_id)
                         msg = EmailMessage(
                                     subject,
-                                    message,
+                                    valid_message,
                                     from_email=sender_name+ '<'+sender_email+'>',
                                     to=[i],
                                     reply_to=[reply_to_name+ '<'+reply_to_email+'>'],
@@ -65,10 +102,13 @@ def MailView(request):
                                     )
                         msg.content_subtype = "html"
                         msg.send()
-                    Mails.objects.create(sender_email=sender_email,sender_name=sender_name, 
-                                                reply_to_email=reply_to_email, reply_to_name=reply_to_name,
-                                                subject=subject, message=message, email_list=email_list)
-                    #conf.settings.DEBUG = False
+                        
+                    
+
+                    # Enter data in links
+                    links = get_links(message, "&lt;phish&gt;", "&lt;/phish&gt;")
+                    for i in links:
+                        PhishingLink.objects.create(link = i, mail=m)
 
 
                 return render(request, 'response.html', {"response": "Email sent successfully"})
@@ -155,7 +195,111 @@ def SenderDetailView(request, id):
 
     if request.method == 'GET':
         data = Mails.objects.get(id=id)
-        emails = data.email_list.splitlines()
-        res = [i.strip() for i in emails]
-        return render(request, 'detail_mail.html', {"data":data, "res":res})
+        if data.email_list == None:
+            res = []
+        else:
+            emails = data.email_list.splitlines()
+            res = [i.strip() for i in emails]
+            act_res = Recipient.objects.filter(mail__id=data.id)
+        return render(request, 'detail_mail.html', {"data":data, "res":res, "act_res":act_res})
+        
+
+def UserDetailView(request, mail_unq_id, user_unq_id):
+    if request.method == 'GET':
+        data=[]
+        links = PhishingLink.objects.filter(mail__unq_id=mail_unq_id)
+        for i in links:
+            pdata = []
+            click_count = 0
+            d = PhishingData.objects.filter(link__id=i.id, recipient__unq_id=user_unq_id)
+            if len(d) > 0:
+                click_count = d[0].click_count
+            if len(d) > 0:
+                p = PhishingDataDict.objects.filter(pdata__id=d[0].id)
+                for j in p:
+                    pdata.append(eval(j.data))
+    
+            data.append({"link":i.link, "click_count":click_count, "pdata":pdata})
+        print(data)
+
+        return render(request, 'detail_user.html', {"data":data})
+
+
+def RenderTemplate(request):
+    demo = """<!DOCTYPE html>
+                <html>
+                <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                body {
+                padding: 25px;
+                background-color: white;
+                color: black;
+                font-size: 25px;
+                }
+
+                .dark-mode {
+                background-color: black;
+                color: white;
+                }
+                </style>
+                </head>
+                <body>
+
+                <input type="text" name="name">
+                <input type="submit" name="submit" value="Update SMTP">
+
+                <h2>Toggle Dark/Light Mode</h2>
+                <p>Click the button to toggle between dark and light mode for this page.</p>
+
+                <button onclick="myFunction()">Toggle dark mode</button>
+
+                <script>
+                function myFunction() {
+                var element = document.body;
+                element.classList.toggle("dark-mode");
+                }
+                </script>
+
+                </body>
+                </html>
+
+
+                """
+    return HttpResponse(demo)
+
+
+
+def DynamicTemplate(request, url_slug, render_id):
+    try:
+        temp_instance = MailTemplate.objects.get(url_slug=url_slug)
+        mail_id, rpt_id = render_id.split("-")
+        l = None
+        links = PhishingLink.objects.filter(mail__unq_id=mail_id)
+        for link in links:
+            if url_slug in link.link:
+                l=link
+    except MailTemplate.DoesNotExist:
+        return HttpResponse("Template does not exist")
+
+    if request.method == 'GET':
+        if l:    
+            p_data = PhishingData.objects.filter(link__id=l.id, recipient__unq_id=rpt_id)
+            if len(p_data) > 0:
+                p_data = p_data[0]
+                p_data.click_count = p_data.click_count + 1
+                p_data.save()
+            else:
+                r = Recipient.objects.get(unq_id=rpt_id)
+                PhishingData.objects.create(link=l, recipient=r, click_count=1)
+        return HttpResponse(temp_instance.template_code)
+
+    if request.method == 'POST':
+        print(str(request.POST.dict()))
+        if l:    
+            p_data = PhishingData.objects.filter(link__id=l.id, recipient__unq_id=rpt_id)
+            if len(p_data) > 0:
+                p_data = p_data[0]
+                PhishingDataDict.objects.create(pdata=p_data, data=str(request.POST.dict()))
+        return HttpResponse(temp_instance.template_code)
         
