@@ -67,17 +67,18 @@ def MailView(request):
                 if reply_to_email == "":
                     
                     for i in emails:
+                        mail_body = valid_message
 
                         if "@" and "." in i:
                             r = Recipient.objects.create(email=i, mail=m)
                         else:
                             r = Recipient.objects.create(email=i, mail=m, valid=False)
                         for j in links:
-                            valid_message = valid_message.replace(j, j+"/"+m.unq_id+"-"+r.unq_id)
+                            mail_body = mail_body.replace(j, j+"/"+m.unq_id+"-"+r.unq_id)
                         
                         msg = EmailMessage(
                                     subject,
-                                    valid_message,
+                                    mail_body,
                                     from_email=sender_name+ '<'+sender_email+'>',
                                     to=[i],
                                     connection=backend,
@@ -89,13 +90,16 @@ def MailView(request):
                                                 
                 else:
                     for i in emails:
+                        mail_body = valid_message
                         if "@" and "." in i:
                             r = Recipient.objects.create(email=i, mail=m)
+                        else:
+                            r = Recipient.objects.create(email=i, mail=m, valid=False)
                         for j in links:
-                            valid_message = valid_message.replace(j, j+"/"+m.unq_id+"-"+r.unq_id)
+                            mail_body = mail_body.replace(j, j+"/"+m.unq_id+"-"+r.unq_id)
                         msg = EmailMessage(
                                     subject,
-                                    valid_message,
+                                    mail_body,
                                     from_email=sender_name+ '<'+sender_email+'>',
                                     to=[i],
                                     reply_to=[reply_to_name+ '<'+reply_to_email+'>'],
