@@ -1,3 +1,4 @@
+from importlib import import_module
 from django.shortcuts import render
 from .forms import MailForm, AddSMTP
 # sendinblue imports
@@ -7,7 +8,7 @@ from django.core.mail.backends.smtp import EmailBackend
 import django.conf as conf
 from django.template import Template
 from django.http import HttpResponse
-
+from phishing.settings import BACKEND_URL
 
 def get_links(s, first, last):
     start_sep=first
@@ -121,7 +122,8 @@ def MailView(request):
         
     else:
         form = MailForm()
-        return render(request, 'mail.html', {'form':form})
+        temps = MailTemplate.objects.all()
+        return render(request, 'mail.html', {'form':form, 'temps':temps, 'b_url':BACKEND_URL})
 
 
 # Add sender view

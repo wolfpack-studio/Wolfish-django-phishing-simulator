@@ -39,6 +39,27 @@
             
             
         </div>
+        <div class="col-md-4" >
+            <h6>Generate phish</h6>
+            <div class="row border">
+                <div class="col-md-12 text-center">
+                    <label id="ll">Link</label>
+                    
+                </div>
+            </div>
+            <div class="row  p-5">
+                <div class="col-md-12 text-center">
+                    
+                    <select id="ss" onchange="getddl()">
+                        <option>Select</option>
+                        {% for t in temps %}
+                            <option value="{{t.url_slug}}">{{t.template_name}}</option>
+                        {% endfor %}
+                    </select>
+              
+                </div>
+            </div>
+        </div>
         
     </div>
 
@@ -48,5 +69,13 @@
     </div>
 </form>
 
+
 </div>
+
+<script>
+    function getddl(){
+        var x = document.getElementById('ss').value
+	document.getElementById('ll').innerHTML = "&lt;phish&gt;"+"{{b_url}}/render-template/"+x+"&lt;/phish&gt;"
+    }
+</script>
 
