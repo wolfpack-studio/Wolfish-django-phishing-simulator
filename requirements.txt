@@ -14,3 +14,7 @@ sib-api-v3-sdk==7.5.0
 whitenoise==6.2.0
 dj-database-url==0.5.0
 django-heroku==0.3.1
+user-agents==2.2.0
+ua-parser==0.15.0
+pyyaml==6.0
+django-user-agents==0.4.0
