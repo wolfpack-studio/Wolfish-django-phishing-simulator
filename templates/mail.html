@@ -51,7 +51,7 @@
                 <div class="col-md-12 text-center">
                     
                     <select id="ss" onchange="getddl()">
-                        <option>Select</option>
+                        <option value="Link">Select</option>
                         {% for t in temps %}
                             <option value="{{t.url_slug}}">{{t.template_name}}</option>
                         {% endfor %}
@@ -75,7 +75,12 @@
 <script>
     function getddl(){
         var x = document.getElementById('ss').value
-	document.getElementById('ll').innerHTML = "&lt;phish&gt;"+"{{b_url}}/render-template/"+x+"&lt;/phish&gt;"
-    }
+        if(x == "Link"){
+            document.getElementById('ll').innerHTML = x
+        }
+        else{
+	        document.getElementById('ll').innerHTML = "&lt;phish&gt;"+"{{b_url}}/render-template/"+x+"&lt;/phish&gt;"
+        }
+        }
 </script>
 
