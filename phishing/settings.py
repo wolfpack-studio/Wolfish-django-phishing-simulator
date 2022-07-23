@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'mailer',
     'widget_tweaks',
+    'django_user_agents',
 ]
 
 
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
 ROOT_URLCONF = 'phishing.urls'
@@ -172,7 +174,7 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-BACKEND_URL = "https://wolfphish-v1-3.herokuapp.com"
+BACKEND_URL = "wolfphish-v1-3.herokuapp.com"
 
 
 if 'DATABASE_URL' in os.environ:

@@ -42,6 +42,7 @@ def MailView(request):
 
                 valid_message = message.replace("&lt;phish&gt;","")
                 valid_message = valid_message.replace("&lt;/phish&gt;","")
+                print(valid_message)
 
                 b = Backend.objects.all()[0]
 
@@ -62,6 +63,7 @@ def MailView(request):
                 links = get_links(message, "&lt;phish&gt;", "&lt;/phish&gt;")
                 for i in links:
                     PhishingLink.objects.create(link = i, mail=m)
+                print(links)
 
                 # Reply-to validation
                 if reply_to_email == "":
@@ -75,6 +77,7 @@ def MailView(request):
                             r = Recipient.objects.create(email=i, mail=m, valid=False)
                         for j in links:
                             mail_body = mail_body.replace(j, j+"/"+m.unq_id+"-"+r.unq_id)
+                        print(mail_body)
                         
                         msg = EmailMessage(
                                     subject,
@@ -125,7 +128,21 @@ def MailView(request):
             return render(request, 'response.html', {"response": "Incorrect input format"})
         
     else:
+        print(request.user_agent.is_mobile) 
+        print(request.user_agent.is_tablet)
+        print(request.user_agent.is_touch_capable)
+        print(request.user_agent.is_pc) 
+        print(request.user_agent.is_bot)
+
+        print(request.user_agent.browser.family) 
+        print(request.user_agent.browser.version)
+        print(request.user_agent.browser.version_string) 
+
+        print(request.user_agent.os)
+        print(request.user_agent.os.version_string) 
+
         form = MailForm()
+
         temps = MailTemplate.objects.all()
         return render(request, 'mail.html', {'form':form, 'temps':temps, 'b_url':BACKEND_URL})
 
