@@ -174,7 +174,7 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-BACKEND_URL = "wolfphish-v1-3.herokuapp.com"
+BACKEND_URL = "wolfphish-v13.herokuapp.com"
 
 
 if 'DATABASE_URL' in os.environ:
