@@ -127,19 +127,7 @@ def MailView(request):
         else:
             return render(request, 'response.html', {"response": "Incorrect input format"})
         
-    else:
-        print(request.user_agent.is_mobile) 
-        print(request.user_agent.is_tablet)
-        print(request.user_agent.is_touch_capable)
-        print(request.user_agent.is_pc) 
-        print(request.user_agent.is_bot)
-
-        print(request.user_agent.browser.family) 
-        print(request.user_agent.browser.version)
-        print(request.user_agent.browser.version_string) 
-
-        print(request.user_agent.os)
-        print(request.user_agent.os.version_string) 
+    else: 
 
         form = MailForm()
 
@@ -210,7 +198,7 @@ def SenderAddView(request):
 def SenderListView(request):
 
     if request.method == 'GET':
-        data = Mails.objects.all()
+        data = Mails.objects.all().order_by('-id')
         return render(request, 'list-senders.html', {"data":data})
 
 
@@ -229,21 +217,26 @@ def SenderDetailView(request, id):
 
 def UserDetailView(request, mail_unq_id, user_unq_id):
     if request.method == 'GET':
+
+        
+
         data=[]
         links = PhishingLink.objects.filter(mail__unq_id=mail_unq_id)
         for i in links:
             pdata = []
             click_count = 0
+            adata = {}
             d = PhishingData.objects.filter(link__id=i.id, recipient__unq_id=user_unq_id)
             if len(d) > 0:
                 click_count = d[0].click_count
+                adata       = d[0].agent_data
             if len(d) > 0:
                 p = PhishingDataDict.objects.filter(pdata__id=d[0].id)
                 for j in p:
                     pdata.append(eval(j.data))
     
-            data.append({"link":i.link, "click_count":click_count, "pdata":pdata})
-        print(data)
+            data.append({"link":i.link, "click_count":click_count, "pdata":pdata, "adata":adata})
+        
 
         return render(request, 'detail_user.html', {"data":data})
 
@@ -306,11 +299,29 @@ def DynamicTemplate(request, url_slug, render_id):
         return HttpResponse("Template does not exist")
 
     if request.method == 'GET':
+
+        adata = {}
+        
+        if request.user_agent.is_mobile:
+            adata["device"]="mobile"
+        if request.user_agent.is_tablet:
+            adata["device"]="tablet"            
+        if request.user_agent.is_pc:
+            adata["device"]="pc"
+        if request.user_agent.is_bot:
+            adata["device"]="bot"
+
+        adata["browser"] = str(request.user_agent.browser.family) +" "+ str(request.user_agent.browser.version_string) 
+
+        adata["os"] = str(request.user_agent.os.family)+" "+str(request.user_agent.os.version_string)
+        
         if l:    
             p_data = PhishingData.objects.filter(link__id=l.id, recipient__unq_id=rpt_id)
             if len(p_data) > 0:
                 p_data = p_data[0]
                 p_data.click_count = p_data.click_count + 1
+                if p_data != None or p_data != "":
+                    p_data.agent_data = str(adata)
                 p_data.save()
             else:
                 r = Recipient.objects.get(unq_id=rpt_id)
@@ -318,7 +329,7 @@ def DynamicTemplate(request, url_slug, render_id):
         return HttpResponse(temp_instance.template_code)
 
     if request.method == 'POST':
-        print(str(request.POST.dict()))
+
         if l:    
             p_data = PhishingData.objects.filter(link__id=l.id, recipient__unq_id=rpt_id)
             if len(p_data) > 0:

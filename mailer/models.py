@@ -49,6 +49,7 @@ class PhishingData(models.Model):
     link        = models.ForeignKey(PhishingLink, on_delete=models.CASCADE)
     recipient   = models.ForeignKey(Recipient, on_delete=models.CASCADE)
     click_count = models.IntegerField(default=0)
+    agent_data  = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return str(self.id)
@@ -59,6 +60,7 @@ class PhishingDataDict(models.Model):
 
     def __str__(self):
         return str(self.id)
+
 
 
 class Backend(models.Model):
@@ -79,7 +81,7 @@ class MailTemplate(models.Model):
 
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) if self.template_name == "" or None else self.template_name
 
 
 

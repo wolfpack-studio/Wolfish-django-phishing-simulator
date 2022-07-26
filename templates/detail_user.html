@@ -13,20 +13,34 @@
     </div>
     <div class="col-md-2 mb-4">
         <h6>
-            click_count
+            click count
         </h6>
         {{i.click_count}}
         
     </div>
 
-    <div class="col-md-6 mb-4">
+
+
+    <div class="col-md-3 mb-4">
         <h6>
-            data
+            form data
         </h6>
         {% for j in i.pdata %}
         <p>{{j}}</p>
         {% endfor %}
     </div>
+
+    <div class="col-md-3 mb-4">
+        <h6>
+            agent info
+        </h6>
+        {{ i.adata }}
+
+        
+    </div>
+
+
+
 
 </div>
 {% endfor %}
