@@ -19,6 +19,9 @@
       <li class="nav-item">
         <a class="nav-link {% if request.path == '/list-mails/' %}active{% endif %}" href="{% url 'list-sender-view' %}">Sent mails</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+      </li>
     </ul>
   
   </nav>

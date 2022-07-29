@@ -178,6 +178,7 @@ BACKEND_URL = "thunderwolf.herokuapp.com"
 #BACKEND_URL = "127.0.0.1:8000"
 
 
+
 if 'DATABASE_URL' in os.environ:
     import dj_database_url
     DATABASES = {'default': dj_database_url.config()}

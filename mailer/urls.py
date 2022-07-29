@@ -5,6 +5,8 @@ from .views import *
 
 urlpatterns = [
     path('', MailView, name="mail-view"),
+    path('login/', Login, name="login"),
+    path('logout/', logout_view, name="logout"),
     path('add-smtp/', SenderAddView, name="add-sender-view"),
     path('list-mails/', SenderListView, name="list-sender-view"),
     path('detail-mail/<id>/', SenderDetailView, name="detail-sender"),

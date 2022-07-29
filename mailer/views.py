@@ -1,5 +1,5 @@
 from importlib import import_module
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .forms import MailForm, AddSMTP
 # sendinblue imports
 from django.core.mail import send_mail, EmailMultiAlternatives, EmailMessage, send_mass_mail
@@ -9,6 +9,38 @@ import django.conf as conf
 from django.template import Template
 from django.http import HttpResponse
 from phishing.settings import BACKEND_URL
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth import logout
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
+
+
+def Login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            messages.info(request, 'invalid creds')
+            return redirect('login')
+    else:
+        return render(request, 'login.html')
+
+
+
+
 
 def get_links(s, first, last):
     start_sep=first
@@ -22,8 +54,8 @@ def get_links(s, first, last):
 
 
 
-
 # View to send emails
+@ login_required(login_url='login/')
 def MailView(request):
     if request.method == "POST":        
 
@@ -136,6 +168,7 @@ def MailView(request):
 
 
 # Add sender view
+@ login_required(login_url='login/')
 def SenderAddView(request):
     if request.method == "POST":
 
@@ -195,6 +228,7 @@ def SenderAddView(request):
 
 
 # Sender listing view with delete functionality.
+@ login_required(login_url='login/')
 def SenderListView(request):
 
     if request.method == 'GET':
