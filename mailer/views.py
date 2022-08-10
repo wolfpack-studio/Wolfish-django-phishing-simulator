@@ -1,4 +1,5 @@
 from importlib import import_module
+import smtplib
 from django.shortcuts import redirect, render
 from .forms import MailForm, AddSMTP
 # sendinblue imports
@@ -12,7 +13,8 @@ from phishing.settings import BACKEND_URL
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from smtplib import SMTP, SMTPConnectError
+from django.core.mail import get_connection
 from django.contrib.auth import logout
 
 
@@ -57,7 +59,11 @@ def get_links(s, first, last):
 # View to send emails
 @ login_required(login_url='login/')
 def MailView(request):
-    if request.method == "POST":        
+    if request.method == "POST":   
+
+        b = Backend.objects.all()[0]
+
+
 
         # Fetching data from form
         form = MailForm(request.POST)
@@ -79,7 +85,7 @@ def MailView(request):
                 b = Backend.objects.all()[0]
 
                 backend = EmailBackend(host=b.email_host, port=b.email_port, username=b.email_host_user, 
-                                    password=b.email_host_password, use_tls=b.email_use_tls, fail_silently=True)
+                                    password=b.email_host_password, use_tls=b.email_use_tls, fail_silently=False)
 
                 # backend = EmailBackend(host="smtpout.secureserver.net" , port="465", username="Syed@quadrimetanoia.com", 
                 #                     password="2Xgh2%/BJ8?EUQ8", use_tls=True, fail_silently=True)
@@ -119,7 +125,8 @@ def MailView(request):
                                     connection=backend,
                                     )
                         msg.content_subtype = "html"
-                        msg.send()
+                        a = msg.send()
+
                         
                     
                                                 
@@ -153,6 +160,15 @@ def MailView(request):
 
                 return render(request, 'response.html', {"response": "Email sent successfully"})
             
+
+            except smtplib.SMTPAuthenticationError:
+                m.delete()
+                return render(request, 'response.html', {"response": "SMTP Authentication Error"})
+
+            except smtplib.SMTPConnectError:
+                m.delete()
+                return render(request, 'response.html', {"response": "SMTP Connect Error"})
+
             except Exception as e:
                 return render(request, 'response.html', {"response": e})
 
