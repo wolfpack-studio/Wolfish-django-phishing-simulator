@@ -174,7 +174,7 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-BACKEND_URL = "monkwolf.herokuapp.com"
+BACKEND_URL = "wildwolf.herokuapp.com"
 #BACKEND_URL = "127.0.0.1:8000"
 
 
