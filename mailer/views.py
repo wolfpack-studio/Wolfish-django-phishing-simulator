@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from .forms import MailForm, AddSMTP
 # sendinblue imports
 from django.core.mail import send_mail, EmailMultiAlternatives, EmailMessage, send_mass_mail
-from .models import MailTemplate, Mails, Backend, PhishingData, PhishingDataDict, PhishingLink, Recipient
+from .models import Attachments, MailTemplate, Mails, Backend, PhishingData, PhishingDataDict, PhishingLink, Recipient
 from django.core.mail.backends.smtp import EmailBackend
 import django.conf as conf
 from django.template import Template
@@ -67,6 +67,9 @@ def MailView(request):
 
         # Fetching data from form
         form = MailForm(request.POST)
+        print(request.POST.dict())
+        for abc in request.FILES.getlist('select'):
+            print(abc)
         if form.is_valid():
             try:
                 sender_email    = form.cleaned_data['sender_email']
@@ -101,7 +104,10 @@ def MailView(request):
                 links = get_links(message, "&lt;phish&gt;", "&lt;/phish&gt;")
                 for i in links:
                     PhishingLink.objects.create(link = i, mail=m)
-                print(links)
+
+                if len(request.FILES.getlist('select')) > 0:
+                    for attch in request.FILES.getlist('select'):
+                        Attachments.objects.create(name=attch.name, mail=m)
 
                 # Reply-to validation
                 if reply_to_email == "":
@@ -125,6 +131,10 @@ def MailView(request):
                                     connection=backend,
                                     )
                         msg.content_subtype = "html"
+                        if len(request.FILES.getlist('select')) > 0:
+                            for attch in request.FILES.getlist('select'):
+                                content = attch.read()
+                                msg.attach(attch.name, content, attch.content_type)
                         a = msg.send()
 
                         
@@ -148,6 +158,10 @@ def MailView(request):
                                     connection=backend,
                                     )
                         msg.content_subtype = "html"
+                        if len(request.FILES.getlist('select')) > 0:
+                            for attch in request.FILES.getlist('select'):
+                                content = attch.read()
+                                msg.attach(attch.name, content, attch.content_type)
                         msg.send()
                         
                     
@@ -256,13 +270,14 @@ def SenderDetailView(request, id):
 
     if request.method == 'GET':
         data = Mails.objects.get(id=id)
+        attchs = Attachments.objects.filter(mail__id=id)
         if data.email_list == None:
             res = []
         else:
             emails = data.email_list.splitlines()
             res = [i.strip() for i in emails]
             act_res = Recipient.objects.filter(mail__id=data.id)
-        return render(request, 'detail_mail.html', {"data":data, "res":res, "act_res":act_res})
+        return render(request, 'detail_mail.html', {"data":data, "res":res, "act_res":act_res, "attchs": attchs})
         
 
 def UserDetailView(request, mail_unq_id, user_unq_id):

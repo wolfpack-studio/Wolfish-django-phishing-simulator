@@ -3,7 +3,7 @@
 {% include 'nav.html' %}
 <div class="container p-4">
 
-<form method="POST" action="">
+<form method="POST" action="" enctype="multipart/form-data">
 
     <div class="row mb-2">
         <div class="col-md-4 ">
@@ -68,6 +68,14 @@
 
         </div>
         
+    </div>
+
+    <div class="row mb-2">
+        
+        <div class="col-md-8 mt-4">
+            <p>Attachments</p>
+            <input type="file" name="select" multiple>
+        </div>
     </div>
 
     {% csrf_token %}

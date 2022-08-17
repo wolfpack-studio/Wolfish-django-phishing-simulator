@@ -45,6 +45,15 @@ class PhishingLink(models.Model):
     def __str__(self):
         return str(self.id)
 
+
+class Attachments(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    mail  = models.ForeignKey(Mails, on_delete=models.CASCADE, related_name="attachments", blank=True, null=True)
+
+    def __str__(self):
+        return str(self.id)
+
+
 class PhishingData(models.Model):
     link        = models.ForeignKey(PhishingLink, on_delete=models.CASCADE)
     recipient   = models.ForeignKey(Recipient, on_delete=models.CASCADE)

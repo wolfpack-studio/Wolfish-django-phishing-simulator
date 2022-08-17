@@ -18,6 +18,14 @@
     </div>
     <div class="col-md-4 mb-4">
         <h6>
+            Attachments
+        </h6>
+        {% for attch in attchs %}
+            {{attch.name}}
+        {% endfor %}
+    </div>
+    <div class="col-md-4 mb-4">
+        <h6>
             Sender
         </h6>
         {{data.sender_name}} : {{data.sender_email}}
