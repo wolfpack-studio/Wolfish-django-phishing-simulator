@@ -61,15 +61,15 @@ Start the server with port custom port and ip.
 
 ### Wolfish Platform
 
-[View wolfish-platform](https://github.com/saleor/saleor-platform)
+[View wolfish-platform](https://wolfish.herokuapp.com/)
 
 
 
 ### Dashboard
 
-To access the dashboard, Just append /admin in the path or url.
+To access the dashboard, Just append /admin in the url.
 
-[View dashboard demo](https://demo.saleor.io/dashboard/)
+[View dashboard demo](https://wolfish.herokuapp.com/admin/)
 
 
 Login credentials: `admin` `1234`
